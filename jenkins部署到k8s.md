@@ -8,7 +8,7 @@ jenkins接收到立即构建任务，调用k8s api，创造新的pod，将任务
 ![image](https://github.com/1179325921/share_jenkins/blob/master/images/addKuberbetesPlugin.png)
 安装完成后，需要配置插件:
 点击 “系统管理” —> “系统设置” —> “新增一个云” —> 选择 “Kubernetes”，然后填写 Kubernetes 和 Jenkins 配置信息。
-![image](https://github.com/1179325921/share_jenkins/blob/master/images/kubernetesSettings.png)
+![image](https://github.com/1179325921/share_jenkins/blob/master/images/kubernetetsSettings.png)
 配置完毕，可以点击 "连接测试"
 按钮测试是否能够连接的到 Kubernetes，如果显示 Connection test successful 则表示连接成功，配置没有问题。
 
