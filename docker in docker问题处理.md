@@ -1,4 +1,3 @@
-![image](7A31FDFC5A754F738663DC1E40A0228E)
 
 问题：pipeline中使用docker进行docker build,push命令，会报没有docker命令。
 
