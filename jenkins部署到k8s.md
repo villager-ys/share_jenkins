@@ -5,16 +5,16 @@
 jenkins接收到立即构建任务，调用k8s api，创造新的pod，将任务分发给这些pod，pod执行任务，任务完成后删除完成任务的pod。
 
 ##### - 1, 安装jenkins kubernetes plugin：
-![image](3D73C908169C4D7C92533176E3B9077E)
+![image](https://github.com/1179325921/share_jenkins/blob/master/images/addKuberbetesPlugin.png)
 安装完成后，需要配置插件:
 点击 “系统管理” —> “系统设置” —> “新增一个云” —> 选择 “Kubernetes”，然后填写 Kubernetes 和 Jenkins 配置信息。
-![image](C9E10047A7A949F09445F59852843984)
+![image](https://github.com/1179325921/share_jenkins/blob/master/images/kubernetesSettings.png)
 配置完毕，可以点击 "连接测试"
 按钮测试是否能够连接的到 Kubernetes，如果显示 Connection test successful 则表示连接成功，配置没有问题。
 
 ##### - 2, 简单测试：
 创建一个 Pipeline 类型 Job 并命名为 my-k8s-jenkins-pipeline，然后在 Pipeline 脚本处填写一个简单的测试脚本如下：
-![image](9C55BDB28ADC45BDBE3F0CC161A75A35)
+![image](https://github.com/1179325921/share_jenkins/blob/master/images/simplePipeline.png)
 
 ```
 def label = "mypod-${UUID.randomUUID().toString()}"
@@ -28,12 +28,13 @@ podTemplate(label: label, cloud: 'kubernetes') {
 }
 ```
 点"立即构建",job就会出现在构建队列里，我们可以通过kubectl命令看到整个创建和删除过程
-![image](42C14328569449F48941EC41348836FF)
+![image](https://github.com/1179325921/share_jenkins/blob/master/images/allPods.png)
 
 #### helloworld maven项目
 - 1,自定义maven镜像
 vim Dockerfile
-![image](E6B86B81F6DE4D9CB376F0F548AB0C71)
+![image](https://github.com/1179325921/share_jenkins/blob/master/images/customMavenImage.png)
+
 docker build .-t mvn:1.0
 docker login
 docker tag <imageId> 仓库名/镜像名：tag
