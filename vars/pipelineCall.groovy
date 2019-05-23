@@ -91,17 +91,18 @@ spec:
                 }
             }
             stage('maven parallel stage'){
-                stage('单元测试'){
-                    steps{
-                        container('maven'){
-                            echo 'starting unitTest...'
-                            //注入jacoco插件配置
-                            sh 'mvn -U -B org.jacoco-maven-plugin:prepare-agent clean verify -Dautoconfig.skip=ture -Dmaven.test.skip=false -Dmaven.test.failure.ingore=ture -f pom.xml'
-                            junit allowEmptyResults:true,testResults:'**/targer/surefire-reports/*xml'
-                            //单元测试覆盖率
-                            jacoco changeBuildStatus:true,maximumLineCoverage:"${coverage}"
-                            //测试报告
-                            xuint([JUnit(deleteOutputFiles:true,failIfNotNew:true,pattern:'**/target/surefire-reports/*xml',skipNoTestFiles:false,stopProcessingIfError:true)])
+                parallel{
+                    stage('单元测试'){
+                        steps{
+                            container('maven'){
+                                echo 'starting unitTest...'
+                                //注入jacoco插件配置
+                                sh 'mvn -U -B org.jacoco-maven-plugin:prepare-agent clean verify -Dautoconfig.skip=ture -Dmaven.test.skip=false -Dmaven.test.failure.ingore=ture -f pom.xml'
+                                junit allowEmptyResults:true,testResults:'**/targer/surefire-reports/*xml'
+                                //单元测试覆盖率
+                                jacoco changeBuildStatus:true,maximumLineCoverage:"${coverage}"
+                                //测试报告
+                                xuint([JUnit(deleteOutputFiles:true,failIfNotNew:true,pattern:'**/target/surefire-reports/*xml',skipNoTestFiles:false,stopProcessingIfError:true)])
                             }
                         }
                     }
@@ -112,13 +113,14 @@ spec:
                             echo "starting soanr analyze..."
                             withSonarQubeEnv('sonarqube'){
                                 sh 'mvn -f pom.xml clean compile sonar:sonar'
+                            }
                         }
                     }
-                }
-                stage('maven构建'){
-                    steps{
-                        container('maven'){
-                            sh 'mvn clean package -U -Dmaven.test.skip=true'
+                    stage('maven构建'){
+                        steps{
+                            container('maven'){
+                                sh 'mvn clean package -U -Dmaven.test.skip=true'
+                            }
                         }
                     }
                 }
